@@ -603,9 +603,9 @@
 .fa-trophy:before {
   content: "\f091";
 }
-.fa-github-square:before {
+/* .fa-github-square:before {
   content: "\f092";
-}
+} */
 .fa-upload:before {
   content: "\f093";
 }
@@ -631,9 +631,9 @@
 .fa-facebook:before {
   content: "\f09a";
 }
-.fa-github:before {
+/* .fa-github:before {
   content: "\f09b";
-}
+} */
 .fa-unlock:before {
   content: "\f09c";
 }
@@ -949,9 +949,9 @@
 .fa-reply:before {
   content: "\f112";
 }
-.fa-github-alt:before {
+/* .fa-github-alt:before {
   content: "\f113";
-}
+} */
 .fa-folder-o:before {
   content: "\f114";
 }

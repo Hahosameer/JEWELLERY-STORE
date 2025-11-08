@@ -1,8 +1,4 @@
-/**
- * Owl Carousel v2.3.4
- * Copyright 2013-2018 David Deutsch
- * Licensed under: SEE LICENSE IN https://github.com/OwlCarousel2/OwlCarousel2/blob/master/LICENSE
- */
+
 .owl-carousel, .owl-carousel .owl-item {
     -webkit-tap-highlight-color: transparent;
     position: relative
@@ -320,7 +316,6 @@
     animation-name: flash;
 }
 
-/* originally authored by Nick Pettit - https://github.com/nickpettit/glide */
 
 @-webkit-keyframes pulse {
     from {
@@ -698,7 +693,6 @@
     animation-name: tada;
 }
 
-/* originally authored by Nick Pettit - https://github.com/nickpettit/glide */
 
 @-webkit-keyframes wobble {
     from {
@@ -3040,7 +3034,6 @@
     animation-name: jackInTheBox;
 }
 
-/* originally authored by Nick Pettit - https://github.com/nickpettit/glide */
 
 @-webkit-keyframes rollIn {
     from {
@@ -3075,7 +3068,6 @@
     animation-name: rollIn;
 }
 
-/* originally authored by Nick Pettit - https://github.com/nickpettit/glide */
 
 @-webkit-keyframes rollOut {
     from {
@@ -3994,10 +3986,6 @@
 }
 
 
-/*  jQuery Nice Select - v1.0
-    https://github.com/hernansartorio/jquery-nice-select
-    Made by Hernán Sartorio
- */
 
 
 .nice-select {
