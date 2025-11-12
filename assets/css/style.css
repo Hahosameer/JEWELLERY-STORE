@@ -286,7 +286,7 @@ button:focus, button:active, button.btn:focus, button.btn:active {
     background-position: right center;
 }
 
-.btn-add-to-cart {
+.btn-add-to-carts {
     background-color: transparent;
     border: 2px solid #929292;
     -webkit-border-radius: 50px;
@@ -300,13 +300,13 @@ button:focus, button:active, button.btn:focus, button.btn:active {
     color: #202020;
 }
 
-.btn-add-to-cart:hover {
+.btn-add-to-carts:hover {
     background-color: #d82e2e;
     border-color: #d82e2e;
     color: #fff;
 }
 
-.btn-add-to-cart.disabled {
+.btn-add-to-carts.disabled {
     pointer-events: none;
     opacity: 0.6;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
@@ -984,7 +984,7 @@ address strong, address b {
     margin-top: 20px;
 }
 
-#header-area .mini-cart .mini-cart-footer .btn-add-to-cart {
+#header-area .mini-cart .mini-cart-footer .btn-add-to-carts {
     color: #202020;
     border-width: 1px;
     text-align: center;
@@ -992,7 +992,7 @@ address strong, address b {
     padding: 17px 35px !important;
 }
 
-#header-area .mini-cart .mini-cart-footer .btn-add-to-cart:hover {
+#header-area .mini-cart .mini-cart-footer .btn-add-to-carts:hover {
     color: #fff;
 }
 
