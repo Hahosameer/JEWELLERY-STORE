@@ -5899,3 +5899,33 @@ ul {
 .logo-box img {
     max-width: 220px;
 }
+
+.qty-btn {
+    border: none;
+    background: #ddd;
+    padding: 2px 8px;
+    margin: 0 5px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.qty-btn:hover {
+    background: #000;
+    color: #fff;
+}
+
+
+.color-option-select li {
+  margin-right: 10px;
+  cursor: pointer;
+  padding: 4px 10px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+.color-option-select li.active {
+  border: 2px solid #000;
+}
+.cart-section {
+  border-top: 1px solid #ddd;
+  padding-top: 15px;
+}

@@ -340,6 +340,159 @@
                 $('#header-area, .slicknav_menu').removeClass('fixed');
             }
         });
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+// ✅ Update Cart UI
+function updateCartDisplay(){
+  const cartBody = $(".mini-cart-body");
+  const cartCount = $(".shop-cart .count");
+  cartBody.empty();
+
+  if(cart.length === 0){
+    cartBody.html("<p class='text-center m-2 empty-cart'>Your cart is empty.</p>");
+    cartCount.text(0);
+    $(".mini-cart-footer").addClass("d-none");
+    return;
+  }
+
+  cart.forEach((item, index)=>{
+    const unitPrice = parseFloat(item.price.replace('$','')) / item.qty;
+    const totalPrice = (unitPrice * item.qty).toFixed(2);
+
+    cartBody.append(`
+      <div class="single-cart-item d-flex align-items-center mb-2" data-index="${index}">
+        <figure class="product-thumb">
+          <a href="#"><img class="img-fluid" src="${item.img}" alt="Product" /></a>
+        </figure>
+        <div class="product-details flex-grow-1">
+          <h2 class="mb-1"><a href="#">${item.name}</a></h2>
+          <div class="cal d-flex align-items-center">
+            <button class="btn-minus" style="border:none;background:none;">−</button>
+            <span class="quantity mx-2">${item.qty}</span>
+            <button class="btn-plus" style="border:none;background:none;">+</button>
+            <span class="multiplication mx-1">x</span>
+            <span class="price" data-unit="${unitPrice}">$${totalPrice}</span>
+          </div>
+        </div>
+        <a href="#" class="remove-icon ml-2"><i class="fa fa-trash-o"></i></a>
+      </div>
+    `);
+  });
+
+  cartCount.text(cart.reduce((a,b)=>a+b.qty,0));
+  $(".mini-cart-footer").removeClass("d-none");
+  localStorage.setItem("cart", JSON.stringify(cart));
+}
+
+// ✅ Add to Cart
+$(document).on("click", ".btn-add-to-cart", function(e){
+    e.preventDefault();
+
+    const productItem = $(this).closest(".single-product-item, .product-details");
+    const parentItem = $(this).closest(".single-product-item"); // Correct wrapper
+
+    const img = parentItem.find(".product-thumb img").attr("src") || "assets/img/default.png";
+    const name = parentItem.find("h2 a").text() || parentItem.find("h2").text();
+    const priceText = parentItem.find(".price").text() || "$0";
+    const unitPrice = parseFloat(priceText.replace('$',''));
+    const qtyInput = parentItem.find("#qty");
+    const qty = qtyInput.length ? parseInt(qtyInput.val()) : 1;
+
+    const existing = cart.find(item => item.name === name);
+
+    if(existing){
+        existing.qty += qty;
+        existing.price = `$${(unitPrice * existing.qty).toFixed(2)}`;
+    } else {
+        cart.push({name, price: `$${(unitPrice*qty).toFixed(2)}`, qty, img});
+    }
+
+    updateCartDisplay();
+});
+
+// ✅ Plus button
+$(document).on("click", ".btn-plus", function(){
+    const index = $(this).closest(".single-cart-item").data("index");
+    cart[index].qty++;
+    const unitPrice = parseFloat(cart[index].price.replace('$','')) / (cart[index].qty-1);
+    cart[index].price = `$${(unitPrice * cart[index].qty).toFixed(2)}`;
+    updateCartDisplay();
+});
+
+// ✅ Minus button
+$(document).on("click", ".btn-minus", function(){
+    const index = $(this).closest(".single-cart-item").data("index");
+    if(cart[index].qty > 1){
+        cart[index].qty--;
+        const unitPrice = parseFloat(cart[index].price.replace('$','')) / (cart[index].qty+1);
+        cart[index].price = `$${(unitPrice * cart[index].qty).toFixed(2)}`;
+    } else {
+        cart.splice(index,1);
+    }
+    updateCartDisplay();
+});
+
+// ✅ Remove item
+$(document).on("click", ".remove-icon", function(e){
+    e.preventDefault();
+    const index = $(this).closest(".single-cart-item").data("index");
+    cart.splice(index,1);
+    updateCartDisplay();
+});
+
+// ✅ Load existing cart on refresh
+updateCartDisplay();
+
+
+
+
+
+// single page start
+// Quick View modal Add to Cart
+$(document).on("click", "#quickView .btn-add-to-cart", function(e){
+    e.preventDefault();
+
+    const container = $(this).closest(".product-details");
+
+    // Product info
+    const name = container.find("h2 a, h2").first().text();
+    const price = container.find(".price").first().text();
+    const qty = parseInt(container.find("#qty").val()) || 1;
+
+    // Get currently visible/main image from carousel
+    let img = container.closest(".quick-view-content")
+                       .find(".product-thumb-carousel .owl-item.active img")
+                       .first()
+                       .attr("src");
+
+    // If no active image, fallback to first image
+    if(!img){
+        img = container.closest(".quick-view-content")
+                       .find(".product-thumb-carousel .single-thumb-item img")
+                       .first()
+                       .attr("src") || "assets/img/default.png";
+    }
+
+    // Get selected color
+    const colorItem = container.find(".color-item.active");
+    const color = colorItem.length ? colorItem.data("color") : container.find(".color-item:first").data("color");
+    const fullName = color ? `${name}-${color}` : name;
+
+    // Check if product exists in cart
+    const existing = cart.find(item => item.name === fullName);
+
+    if(existing){
+        existing.qty += qty;
+        const unitPrice = parseFloat(price.replace('$',''));
+        existing.price = `$${(unitPrice * existing.qty).toFixed(2)}`;
+    } else {
+        cart.push({name: fullName, price, qty, img, color});
+    }
+
+    updateCartDisplay();
+});
+
+// single page end
 
     }); //Ready Function End
 
