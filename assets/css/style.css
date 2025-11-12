@@ -1682,8 +1682,8 @@ address strong, address b {
     position: relative;
     padding: 200px 0;
     z-index: 1;
-    width: 1005;
-    background-color: red;
+    /* width: 1005; */
+    /* background-color: red; */
 }
 
 @media only screen and (min-width: 320px) and (max-width: 575px), only screen and (min-width: 576px) and (max-width: 767px) {
@@ -1721,7 +1721,7 @@ address strong, address b {
     line-height: 1.5;
     font-family: "Montserrat";
     text-transform: uppercase;
-    color: #d82e2e;
+    /* color: #d82e2e; */
 }
 
 #banner-area #banner-carousel .single-carousel-wrap .banner-caption h2 {
