@@ -493,6 +493,331 @@ $(document).on("click", "#quickView .btn-add-to-cart", function(e){
 });
 
 // single page end
+    // The Slideshow class.
+class Slideshow {
+    constructor(el) {
+        
+        this.DOM = {el: el};
+      
+        this.config = {
+          slideshow: {
+            delay: 3000,
+            pagination: {
+              duration: 3,
+            }
+          }
+        };
+        
+        // Set the slideshow
+        this.init();
+      
+    }
+    init() {
+      
+      var self = this;
+      
+      // Charmed title
+      this.DOM.slideTitle = this.DOM.el.querySelectorAll('.slide-title');
+      this.DOM.slideTitle.forEach((slideTitle) => {
+        charming(slideTitle);
+      });
+      
+      // Set the slider
+      this.slideshow = new Swiper (this.DOM.el, {
+          
+          loop: true,
+          autoplay: {
+            delay: this.config.slideshow.delay,
+            disableOnInteraction: false,
+          },
+          speed: 500,
+          preloadImages: true,
+          updateOnImagesReady: true,
+          
+          // lazy: true,
+          // preloadImages: false,
+
+          pagination: {
+            el: '.slideshow-pagination',
+            clickable: true,
+            bulletClass: 'slideshow-pagination-item',
+            bulletActiveClass: 'active',
+            clickableClass: 'slideshow-pagination-clickable',
+            modifierClass: 'slideshow-pagination-',
+            renderBullet: function (index, className) {
+              
+              var slideIndex = index,
+                  number = (index <= 8) ? '0' + (slideIndex + 1) : (slideIndex + 1);
+              
+              var paginationItem = '<span class="slideshow-pagination-item">';
+              paginationItem += '<span class="pagination-number">' + number + '</span>';
+              paginationItem = (index <= 8) ? paginationItem + '<span class="pagination-separator"><span class="pagination-separator-loader"></span></span>' : paginationItem;
+              paginationItem += '</span>';
+            
+              return paginationItem;
+              
+            },
+          },
+
+          // Navigation arrows
+          navigation: {
+            nextEl: '.slideshow-navigation-button.next',
+            prevEl: '.slideshow-navigation-button.prev',
+          },
+
+          // And if we need scrollbar
+          scrollbar: {
+            el: '.swiper-scrollbar',
+          },
+        
+          on: {
+            init: function() {
+              self.animate('next');
+            },
+          }
+        
+        });
+      
+        // Init/Bind events.
+        this.initEvents();
+        
+    }
+    initEvents() {
+        
+        this.slideshow.on('paginationUpdate', (swiper, paginationEl) => this.animatePagination(swiper, paginationEl));
+        //this.slideshow.on('paginationRender', (swiper, paginationEl) => this.animatePagination());
+
+        this.slideshow.on('slideNextTransitionStart', () => this.animate('next'));
+        
+        this.slideshow.on('slidePrevTransitionStart', () => this.animate('prev'));
+            
+    }
+    animate(direction = 'next') {
+      
+        // Get the active slide
+        this.DOM.activeSlide = this.DOM.el.querySelector('.swiper-slide-active'),
+        this.DOM.activeSlideImg = this.DOM.activeSlide.querySelector('.slide-image'),
+        this.DOM.activeSlideTitle = this.DOM.activeSlide.querySelector('.slide-title'),
+        this.DOM.activeSlideTitleLetters = this.DOM.activeSlideTitle.querySelectorAll('span');
+      
+        // Reverse if prev  
+        this.DOM.activeSlideTitleLetters = direction === "next" ? this.DOM.activeSlideTitleLetters : [].slice.call(this.DOM.activeSlideTitleLetters).reverse();
+      
+        // Get old slide
+        this.DOM.oldSlide = direction === "next" ? this.DOM.el.querySelector('.swiper-slide-prev') : this.DOM.el.querySelector('.swiper-slide-next');
+        if (this.DOM.oldSlide) {
+          // Get parts
+          this.DOM.oldSlideTitle = this.DOM.oldSlide.querySelector('.slide-title'),
+          this.DOM.oldSlideTitleLetters = this.DOM.oldSlideTitle.querySelectorAll('span'); 
+          // Animate
+          this.DOM.oldSlideTitleLetters.forEach((letter,pos) => {
+            TweenMax.to(letter, .3, {
+              ease: Quart.easeIn,
+              delay: (this.DOM.oldSlideTitleLetters.length-pos-1)*.04,
+              y: '50%',
+              opacity: 0
+            });
+          });
+        }
+      
+        // Animate title
+        this.DOM.activeSlideTitleLetters.forEach((letter,pos) => {
+					TweenMax.to(letter, .6, {
+						ease: Back.easeOut,
+						delay: pos*.05,
+						startAt: {y: '50%', opacity: 0},
+						y: '0%',
+						opacity: 1
+					});
+				});
+      
+        // Animate background
+        TweenMax.to(this.DOM.activeSlideImg, 1.5, {
+            ease: Expo.easeOut,
+            startAt: {x: direction === 'next' ? 200 : -200},
+            x: 0,
+        });
+      
+        //this.animatePagination()
+    
+    }
+    animatePagination(swiper, paginationEl) {
+            
+      // Animate pagination
+      this.DOM.paginationItemsLoader = paginationEl.querySelectorAll('.pagination-separator-loader');
+      this.DOM.activePaginationItem = paginationEl.querySelector('.slideshow-pagination-item.active');
+      this.DOM.activePaginationItemLoader = this.DOM.activePaginationItem.querySelector('.pagination-separator-loader');
+      
+      // console.log(swiper.pagination);
+      // console.log(swiper.activeIndex);
+      
+      // Reset and animate
+        TweenMax.set(this.DOM.paginationItemsLoader, {scaleX: 0});
+        TweenMax.to(this.DOM.activePaginationItemLoader, this.config.slideshow.pagination.duration, {
+          startAt: {scaleX: 0},
+          scaleX: 1,
+        });
+      
+      
+    }
+    
+}
+
+
+
+
+
+// campare start
+document.querySelectorAll(".compare-btn").forEach(btn => {
+  btn.addEventListener("click", function(e){
+    e.preventDefault();
+
+    const product = {
+      id: this.dataset.id,
+      title: this.dataset.title,
+      image: this.dataset.image,
+      price: this.dataset.price,
+      description: this.dataset.description
+    };
+
+    let compareList = JSON.parse(localStorage.getItem("compareList")) || [];
+
+    // Check if product already added
+    if(compareList.some(p => p.id === product.id)){
+      alert("Product already in compare list!");
+      return;
+    }
+
+    compareList.push(product);
+    localStorage.setItem("compareList", JSON.stringify(compareList));
+
+    // Redirect to Compare Page
+    window.location.href = "compare.html";
+  });
+});
+
+function loadCompareItems() {
+  let list = JSON.parse(localStorage.getItem("compareList")) || [];
+
+  // Remove old dynamic columns except first column
+  document.querySelectorAll("#compare-table tbody td:not(.first-column)").forEach(td => td.remove());
+
+  list.forEach(p => {
+    document.getElementById("row-product").innerHTML += `
+      <td class="product-image-title">
+          <img src="${p.image}" class="img-fluid" width="120"><br>
+          <a class="title">${p.title}</a>
+      </td>
+    `;
+    document.getElementById("row-description").innerHTML += `<td class="pro-desc"><p>${p.description}</p></td>`;
+    document.getElementById("row-price").innerHTML += `<td class="pro-price">${p.price}</td>`;
+    document.getElementById("row-color").innerHTML += `<td class="pro-color">Default</td>`;
+    document.getElementById("row-stock").innerHTML += `<td class="pro-stock">In Stock</td>`;
+    document.getElementById("row-cart").innerHTML += `<td><a href="#" class="btn-add-to-cart">Add to Cart</a></td>`;
+    document.getElementById("row-delete").innerHTML += `
+      <td class="pro-remove">
+          <button class="remove-btn" data-id="${p.id}">
+              <i class="fa fa-trash-o"></i>
+          </button>
+      </td>
+    `;
+  });
+}
+
+// Remove product
+document.addEventListener("click", function(e) {
+  if(e.target.closest(".remove-btn")){
+    let id = e.target.closest(".remove-btn").dataset.id;
+    let list = JSON.parse(localStorage.getItem("compareList")) || [];
+    list = list.filter(x => x.id !== id);
+    localStorage.setItem("compareList", JSON.stringify(list));
+    loadCompareItems();
+  }
+});
+
+// Load on page load
+window.onload = loadCompareItems;
+
+
+// campare end
+
+
+// wishlist start *******************
+// ============================
+// Wishlist System (LocalStorage)
+// ============================
+
+$(document).ready(function(){
+
+    // Load wishlist from localStorage
+    var wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+
+    // Function to render wishlist table
+    function renderWishlist(){
+        var $tbody = $(".wishlist-table-body");
+        if($tbody.length === 0) return;
+        $tbody.html(""); // clear table
+
+        $.each(wishlist, function(i, item){
+            var row = `<tr>
+                <td><img src="${item.image}" style="width:50px;"></td>
+                <td>${item.title}</td>
+                <td>${item.price}</td>
+                <td>In Stock</td>
+                <td><a href="cart.html" class="btn-add-to-cart">Add to Cart</a></td>
+                <td><a href="#" class="remove-wish" data-id="${item.id}"><i class="fa fa-trash-o"></i></a></td>
+            </tr>`;
+            $tbody.append(row);
+        });
+    }
+
+    // Initial render
+    renderWishlist();
+
+    // Add to Wishlist
+    $(".wishlist-btn").click(function(e){
+        e.preventDefault();
+
+        var id = $(this).data("id").toString();
+        var title = $(this).data("title");
+        var image = $(this).data("image");
+        var price = $(this).data("price");
+
+        // Avoid duplicates
+        if(wishlist.find(item => item.id === id)){
+            alert("Product already in wishlist!");
+            return;
+        }
+
+        wishlist.push({id:id, title:title, image:image, price:price});
+        localStorage.setItem("wishlist", JSON.stringify(wishlist));
+        alert(title + " added to wishlist!");
+
+        renderWishlist();
+    });
+
+    // Remove from Wishlist
+    $(document).on("click", ".remove-wish", function(e){
+        e.preventDefault();
+        var id = $(this).data("id").toString();
+        wishlist = wishlist.filter(item => item.id !== id);
+        localStorage.setItem("wishlist", JSON.stringify(wishlist));
+        renderWishlist();
+    });
+
+});
+
+
+// wishlist end *******************
+
+
+
+
+
+
+
+
+const slideshow = new Slideshow(document.querySelector('.slideshow'));
 
     }); //Ready Function End
 
@@ -967,6 +1292,7 @@ async function start() {
 }
 
 start()
+
 
 
 
