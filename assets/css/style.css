@@ -1661,20 +1661,10 @@ address strong, address b {
 /*== Banner // Slider Area Start ==*/
 #banner-area {
     position: relative;
+    /* height: 100vh; */
 }
 
-#banner-area:after {
-    background-color: #202020;
-    content: '';
-    position: absolute;
-    height: 100%;
-    left: 0;
-    top: -1px;
-    width: 100%;
-    -webkit-clip-path: polygon(0% 75%, 0% 0%, 100% 0%, 100% 35%);
-    clip-path: polygon(0% 75%, 0% 0%, 100% 0%, 100% 35%);
-    z-index: -1;
-}
+
 
 #banner-area #banner-carousel .single-carousel-wrap {
     background-size: cover;
@@ -1683,7 +1673,7 @@ address strong, address b {
     position: relative;
     padding: 200px 0;
     z-index: 1;
-    /* width: 1005; */
+    width: 100%;
     /* background-color: red; */
 }
 
@@ -1762,15 +1752,16 @@ address strong, address b {
 }
 
 #banner-area #banner-carousel .single-carousel-wrap.slide-item-1 {
-    background-image: url("../img/image7.jpg");
+    background-image: url("../img/a.jpg");
 }
 
 #banner-area #banner-carousel .single-carousel-wrap.slide-item-2 {
-    background-image: url("../img/image2.jpg");
+    background-image: url("../img/b.webp");
 }
 
 #banner-area #banner-carousel .single-carousel-wrap.slide-item-3 {
-    background-image: url("../img/image8.jpg");
+    background-image: url("../img/c.webp");
+
 }
 
 #banner-area #banner-carousel .single-carousel-wrap.slide-item-4 {
@@ -4128,7 +4119,7 @@ fieldset legend {
 }
 
 .compare-table .table tbody tr td.product-image-title .image img {
-    max-width: 100%;
+    width: 200px;
 }
 
 .compare-table .table tbody tr td.product-image-title .category {
@@ -4140,12 +4131,14 @@ fieldset legend {
 }
 
 .compare-table .table tbody tr td.product-image-title .title {
+    width: 100%;
     float: left;
     clear: both;
     font-size: 1.6rem;
     line-height: 1.5;
     color: #727272;
     font-weight: 700;
+    padding: 10px; 
 }
 
 .compare-table .table tbody tr td.product-image-title .title:hover {
@@ -4155,6 +4148,7 @@ fieldset legend {
 .compare-table .table tbody tr td.pro-desc p {
     text-align: left;
     margin: 0;
+    text-align: center;
 }
 
 .compare-table .table tbody tr td.pro-price, .compare-table .table tbody tr td.pro-color, .compare-table .table tbody tr td.pro-stock {
@@ -6075,6 +6069,4 @@ footer .logo {
   background: #FFFFFF;
   transform-origin: 0 0;
 }
-
-
 

@@ -367,9 +367,15 @@ function updateCartDisplay(){
         <div class="product-details flex-grow-1">
           <h2 class="mb-1"><a href="#">${item.name}</a></h2>
           <div class="cal d-flex align-items-center">
-            <button class="btn-minus" style="border:none;background:none;">−</button>
+            <button class="btn-minus" style="border:1px solid grey;background:none;border-radius: 50%;height: 15px;
+width: 15px;display: flex;
+justify-content: center;
+align-items: center;cursor: pointer;">−</button>
             <span class="quantity mx-2">${item.qty}</span>
-            <button class="btn-plus" style="border:none;background:none;">+</button>
+            <button class="btn-plus"  style="border:1px solid grey;background:none;border-radius: 50%;height: 15px;
+width: 15px;display: flex;
+justify-content: center;
+align-items: center;cursor: pointer;">+</button>
             <span class="multiplication mx-1">x</span>
             <span class="price" data-unit="${unitPrice}">$${totalPrice}</span>
           </div>
@@ -705,10 +711,12 @@ function loadCompareItems() {
   list.forEach(p => {
     document.getElementById("row-product").innerHTML += `
       <td class="product-image-title">
-          <img src="${p.image}" class="img-fluid" width="120"><br>
-          <a class="title">${p.title}</a>
+          <img src="${p.image}" class="img-fluid"  style="width:150px;"><br>
+          <a class="title .table tbody tr td.product-image-title .title">${p.title}</a>
       </td>
     `;
+
+    
     document.getElementById("row-description").innerHTML += `<td class="pro-desc"><p>${p.description}</p></td>`;
     document.getElementById("row-price").innerHTML += `<td class="pro-price">${p.price}</td>`;
     document.getElementById("row-color").innerHTML += `<td class="pro-color">Default</td>`;
@@ -722,8 +730,9 @@ function loadCompareItems() {
       </td>
     `;
   });
+   
 }
-
+  
 // Remove product
 document.addEventListener("click", function(e) {
   if(e.target.closest(".remove-btn")){
@@ -760,7 +769,8 @@ $(document).ready(function(){
 
         $.each(wishlist, function(i, item){
             var row = `<tr>
-                <td><img src="${item.image}" style="width:50px;"></td>
+             <td><img src="${item.image}" style="width:150px;"></td>
+
                 <td>${item.title}</td>
                 <td>${item.price}</td>
                 <td>In Stock</td>
@@ -1297,3 +1307,8 @@ start()
 
 
 
+$(window).on('load', function() {
+    $('#loader').fadeOut('slow', function() {
+        $('#homePage').fadeIn('slow');
+    });
+});
